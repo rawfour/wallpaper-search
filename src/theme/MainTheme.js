@@ -19,7 +19,7 @@ const MainTheme = ({ children }) => {
 };
 
 MainTheme.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([PropTypes.shape(), PropTypes.array]).isRequired,
 };
 
 export default MainTheme;

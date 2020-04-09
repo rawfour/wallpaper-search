@@ -9,10 +9,11 @@ import Settings from 'views/Settings';
 import NotFound from 'views/NotFound';
 import ErrorPage from 'views/Error';
 import WallpaperList from 'views/WallpaperList';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import history from 'history.js';
+import { Router, Switch, Route, Redirect } from 'react-router-dom';
 
 const StyledMainWarpper = styled.div`
-  max-width: 1500px;
+  /* max-width: 1500px; */
   margin: 0 auto;
   padding: 40px 15px;
 `;
@@ -22,7 +23,7 @@ const App = () => {
     <>
       <MainTheme>
         <CssBaseline />
-        <BrowserRouter>
+        <Router history={history}>
           <Header />
           <StyledMainWarpper>
             <Switch>
@@ -36,7 +37,7 @@ const App = () => {
               <Route render={() => <Redirect to="/notFound" />} />
             </Switch>
           </StyledMainWarpper>
-        </BrowserRouter>
+        </Router>
       </MainTheme>
     </>
   );
