@@ -20,6 +20,7 @@ const fade = keyframes`
 
 const StyledItemwrapper = styled.div`
   height: 267px;
+  max-width: 100%;
   opacity: 0;
   position: relative;
   animation: ${fade} 1s 0.5s forwards;
@@ -33,6 +34,7 @@ const StyledItemwrapper = styled.div`
 const useStyles = makeStyles(() => ({
   imgItem: {
     height: '100%',
+    maxWidth: '100%',
   },
   iconItem: {
     position: 'absolute',

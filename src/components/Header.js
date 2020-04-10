@@ -93,7 +93,6 @@ const Header = ({ fetchImagesByTyping }) => {
             <Typography
               component={Link}
               to={`${process.env.PUBLIC_URL}/`}
-              variant="span"
               className={classes.title_inner}
             >
               Wallpaper search

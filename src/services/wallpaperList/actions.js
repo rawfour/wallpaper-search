@@ -35,8 +35,11 @@ export const fetchCountry = (latitude, longitude) => async (dispatch) => {
     const location = await axios.get(
       `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${googlMapsApiKey}`,
     );
+    const loactionResults = location.data.results;
     const res = await axios.get(
-      `https://api.unsplash.com/search/photos?client_id=${unsplashApiKey}&query=${location.data.results[12].formatted_address}`,
+      `https://api.unsplash.com/search/photos?client_id=${unsplashApiKey}&query=${
+        loactionResults[loactionResults.length - 1].formatted_address
+      }`,
     );
     dispatch({
       type: FETCH_IMAGES_DONE,
