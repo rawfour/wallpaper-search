@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import { connect } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import Sidebar from 'components/Sidebar';
+import { Link } from 'react-router-dom';
+import { fetchImagesByTyping as fetchImagesByTypingAction } from 'services/wallpaperList/actions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,9 +21,15 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
     display: 'none',
+    color: 'white',
+    textDecoration: 'none',
     [theme.breakpoints.up('sm')]: {
       display: 'block',
     },
+  },
+  title_inner: {
+    color: 'white',
+    textDecoration: 'none',
   },
   search: {
     position: 'relative',
@@ -37,12 +47,15 @@ const useStyles = makeStyles((theme) => ({
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
+    backgroundColor: 'transparent',
+    border: 'none',
     height: '100%',
     position: 'absolute',
     pointerEvents: 'none',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    color: '#939a9d',
   },
   inputRoot: {
     color: 'inherit',
@@ -61,8 +74,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Header = () => {
+const Header = ({ fetchImagesByTyping }) => {
   const classes = useStyles();
+
+  const [searchInput, setSearchInput] = useState('');
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    fetchImagesByTyping(searchInput);
+  };
 
   return (
     <div className={classes.root}>
@@ -70,13 +90,22 @@ const Header = () => {
         <Toolbar>
           <Sidebar />
           <Typography className={classes.title} variant="h6" noWrap>
-            Wallpaper search
+            <Typography
+              component={Link}
+              to={`${process.env.PUBLIC_URL}/`}
+              variant="span"
+              className={classes.title_inner}
+            >
+              Wallpaper search
+            </Typography>
           </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
+          <form onSubmit={handleSearchSubmit} className={classes.search}>
+            <button type="submit" className={classes.searchIcon}>
               <SearchIcon />
-            </div>
+            </button>
             <InputBase
+              onChange={(e) => setSearchInput(e.target.value)}
+              value={searchInput}
               placeholder="Type keyword..."
               classes={{
                 root: classes.inputRoot,
@@ -84,11 +113,21 @@ const Header = () => {
               }}
               inputProps={{ 'aria-label': 'search' }}
             />
-          </div>
+          </form>
         </Toolbar>
       </AppBar>
     </div>
   );
 };
 
-export default Header;
+Header.propTypes = {
+  fetchImagesByTyping: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchImagesByTyping: (searchInput) => dispatch(fetchImagesByTypingAction(searchInput)),
+});
+
+export default connect(null, mapDispatchToProps)(Header);
+
+// fetchImagesByTyping

@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import styled, { keyframes } from 'styled-components';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import { fetchImages as fetchImagesAction } from 'services/wallpaperList/actions';
-import SklepetonComponent from '../components/Skeleton';
+import { fetchCountry as fetchCountryAction } from 'services/wallpaperList/actions';
+import SklepetonComponent from 'components/Skeleton';
+import SearchingResult from 'components/SearchingResult';
 
 const useStyles = makeStyles(() => ({
   listWrapper: {
@@ -15,48 +15,32 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const fade = keyframes`
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-`;
-
-const StyledImgItem = styled.img`
-  opacity: 0;
-  animation: ${fade} 1s 0.5s forwards;
-  margin: 10px;
-`;
-
-const WallpaperList = ({ fetchImages, images, loading }) => {
+const WallpaperList = ({ fetchCountry, images, loading }) => {
   const classes = useStyles();
-  useEffect(() => {
-    fetchImages();
-  }, [fetchImages]);
 
-  let content;
-  if (loading) {
-    content = (
-      <>
-        <SklepetonComponent />
-      </>
-    );
-  } else if (images) {
-    content = (
-      <>
-        {images.map((item) => (
-          <StyledImgItem src={item.urls.small} alt={item.alt_description} key={item.id} />
-        ))}
-      </>
-    );
-  }
+  const setLocation = (position) => {
+    fetchCountry(position.coords.latitude, position.coords.longitude);
+  };
+
+  const detectLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(setLocation);
+    } else {
+      alert('Geolocation is not supported by this browser.');
+    }
+  };
+
+  useEffect(() => {
+    if (!images) {
+      detectLocation();
+    }
+  }, []);
 
   return (
     <>
-      <div className={classes.listWrapper}>{content}</div>
+      <div className={classes.listWrapper}>
+        {loading ? <SklepetonComponent times={10} /> : <SearchingResult images={images} />}
+      </div>
     </>
   );
 };
@@ -64,7 +48,7 @@ const WallpaperList = ({ fetchImages, images, loading }) => {
 WallpaperList.propTypes = {
   images: PropTypes.arrayOf(PropTypes.shape()),
   loading: PropTypes.bool.isRequired,
-  fetchImages: PropTypes.func.isRequired,
+  fetchCountry: PropTypes.func.isRequired,
 };
 
 WallpaperList.defaultProps = {
@@ -77,7 +61,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchImages: () => dispatch(fetchImagesAction()),
+  fetchCountry: (latitude, longitude) => dispatch(fetchCountryAction(latitude, longitude)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WallpaperList);

@@ -1,5 +1,7 @@
 export const FETCH_IMAGES_BEGINE = 'FETCH_IMAGES_BEGINE';
 export const FETCH_IMAGES_DONE = 'FETCH_IMAGES_DONE';
 
+export const HANDLE_ITEM_BUTTON = 'HANDLE_ITEM_BUTTON';
+
 export const SET_ERROR = 'SET_ERROR';
 export const CLEAR_ERROR = 'CLEAR_ERROR';

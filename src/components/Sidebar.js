@@ -9,7 +9,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import HomeIcon from '@material-ui/icons/Home';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import SettingsIcon from '@material-ui/icons/Settings';
 import IconButton from '@material-ui/core/IconButton';
 import { Link } from 'react-router-dom';
 
@@ -49,25 +48,18 @@ const Sidebar = () => {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        <ListItem component={Link} to="/" button>
+        <ListItem component={Link} to={`${process.env.PUBLIC_URL}/`} button>
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>
           <ListItemText>Home</ListItemText>
         </ListItem>
 
-        <ListItem component={Link} to="/saved" button>
+        <ListItem component={Link} to={`${process.env.PUBLIC_URL}/saved`} button>
           <ListItemIcon>
             <FavoriteIcon />
           </ListItemIcon>
           <ListItemText>Saved</ListItemText>
-        </ListItem>
-
-        <ListItem component={Link} to="/settings" button>
-          <ListItemIcon>
-            <SettingsIcon />
-          </ListItemIcon>
-          <ListItemText>Settings</ListItemText>
         </ListItem>
       </List>
     </div>
