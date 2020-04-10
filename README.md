@@ -21,7 +21,7 @@ $ npm install # or yarn
 ```
 
 ## Description
-this is an application that searches for images based on a keyword.
+This is an application that searches for images based on a keyword.
  
 ## Technologies
 Project uses:
